@@ -19,6 +19,7 @@ public class ServerLoader {
             // Обработка подключающихся клиентов
             try {
                 Socket client = server.accept();
+                new ClientHandler(client);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
