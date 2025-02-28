@@ -2,6 +2,7 @@ package chat;
 
 import chat.packet.Packet;
 import chat.packet.PacketAuthorize;
+import chat.packet.PacketManager;
 
 import java.io.DataInputStream;
 import java.net.Socket;
@@ -33,14 +34,10 @@ public class ClientHandler extends Thread {
             }
             short id = dis.readShort();
             // чтение пакета
-            Packet packet;
-            switch(id) {
-                case 1: {
-                    packet = new PacketAuthorize();
-                    break;
-                }
-            }
+            Packet packet = PacketManager.getPacket(id);
+            packet.setSocket(client);
             packet.read(dis);
+            packet.handle();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
