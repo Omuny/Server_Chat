@@ -23,11 +23,11 @@ public class PacketAuthorize extends Packet {
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
-        dos.writeUTF(nickname);
+
     }
 
     @Override
     public void read(DataInputStream dis) throws IOException {
-
+        nickname = dis.readUTF();
     }
 }

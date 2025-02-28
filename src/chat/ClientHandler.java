@@ -1,8 +1,9 @@
 package chat;
 
-import java.io.DataInput;
+import chat.packet.Packet;
+import chat.packet.PacketAuthorize;
+
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
@@ -17,18 +18,31 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         while (true) {
-            try {
-                DataInputStream dis = new DataInputStream(client.getInputStream());
-                if(dis.available() > 0) {
-                    // Чтение и обработка
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
+            readData();
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {}
+        }
+    }
+
+    private void readData() {
+        try {
+            DataInputStream dis = new DataInputStream(client.getInputStream());
+            if (dis.available() <= 0) {
+                return;
+            }
+            short id = dis.readShort();
+            // чтение пакета
+            Packet packet;
+            switch(id) {
+                case 1: {
+                    packet = new PacketAuthorize();
+                    break;
+                }
+            }
+            packet.read(dis);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -30,7 +30,7 @@ public class ServerLoader {
         }
     }
 
-    public static void start() {
+    private static void start() {
         try {
             server = new ServerSocket(1446);
         } catch (IOException ex) {
