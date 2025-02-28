@@ -1,19 +1,27 @@
 package chat;
 
 import chat.packet.Packet;
-import chat.packet.PacketAuthorize;
 import chat.packet.PacketManager;
-
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
 
     private final Socket client;
+    private String nickname = "Неизвестный";
 
     public ClientHandler(Socket client) {
         this.client = client;
         start();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override
@@ -38,9 +46,13 @@ public class ClientHandler extends Thread {
             packet.setSocket(client);
             packet.read(dis);
             packet.handle();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void invalidate() {
+        ServerLoader.invalidate(client);
     }
 
 }

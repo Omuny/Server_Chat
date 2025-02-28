@@ -1,5 +1,7 @@
 package chat.packet;
 
+import chat.ServerLoader;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,6 +35,6 @@ public class PacketAuthorize extends Packet {
 
     @Override
     public void handle() {
-
+        ServerLoader.getHandler(getSocket()).setNickname(nickname);
     }
 }

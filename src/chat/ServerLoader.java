@@ -3,10 +3,13 @@ package chat;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerLoader {
 
     private static ServerSocket server;
+    private static Map<Socket, ClientHandler> handlers = new HashMap<>();
 
     public static void main(String[] args) {
         start();
@@ -19,7 +22,9 @@ public class ServerLoader {
             // Обработка подключающихся клиентов
             try {
                 Socket client = server.accept();
-                new ClientHandler(client);
+                ClientHandler handler = new ClientHandler(client);
+                handler.start();
+                handlers.put(client, handler);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -44,6 +49,14 @@ public class ServerLoader {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static  ClientHandler getHandler(Socket socket) {
+        return handlers.get(socket);
+    }
+
+    public static void invalidate(Socket socket) {
+        handlers.remove(socket);
     }
 
 }
