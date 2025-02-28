@@ -13,7 +13,6 @@ public class ClientHandler extends Thread {
 
     public ClientHandler(Socket client) {
         this.client = client;
-        start();
     }
 
     public String getNickname() {
@@ -27,18 +26,19 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         while (true) {
-            readData();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {}
+            if (!readData()) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {}
+            }
         }
     }
 
-    private void readData() {
+    private boolean readData() {
         try {
             DataInputStream dis = new DataInputStream(client.getInputStream());
             if (dis.available() <= 0) {
-                return;
+                return false;
             }
             short id = dis.readShort();
             // чтение пакета
@@ -49,6 +49,7 @@ public class ClientHandler extends Thread {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return true;
     }
 
     public void invalidate() {
