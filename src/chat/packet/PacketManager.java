@@ -1,6 +1,5 @@
 package chat.packet;
 
-import java.io.DataInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ public class PacketManager {
 
     static {
         packets.put((short) 1, PacketAuthorize.class);
+        packets.put((short) 2, PacketMessage.class);
     }
 
     public static Packet getPacket(short id) {
