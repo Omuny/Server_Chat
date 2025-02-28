@@ -1,16 +1,18 @@
 package chat;
 
+import javax.swing.event.InternalFrameListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class ServerLoader {
 
     private static ServerSocket server;
-    private static Map<Socket, ClientHandler> handlers = new HashMap<>();
+    private static ServerHandler handler;
+    static Map<Socket, ClientHandler> handlers = new HashMap<>();
 
     public static void main(String[] args) {
         start();
@@ -19,23 +21,30 @@ public class ServerLoader {
     }
 
     private static void handle() {
-        while (true) {
-            // Обработка подключающихся клиентов
-            try {
-                Socket client = server.accept();
-                ClientHandler handler = new ClientHandler(client);
-                handler.start();
-                handlers.put(client, handler);
-            } catch (SocketException ex) {
-                return;
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        handler = new ServerHandler(server);
+        handler.start();
+        readChat();
+    }
 
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {}
+    private static void readChat() {
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            if (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                System.out.println(line);
+                if (line.equals("/end")) {
+                    end();
+                }
+            } else {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {}
+            }
         }
+    }
+
+    public static ServerHandler getSServerHandler() {
+        return handler;
     }
 
     private static void start() {
