@@ -1,8 +1,6 @@
 package chat;
 
 import chat.packet.Packet;
-
-import javax.swing.event.InternalFrameListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -58,7 +56,7 @@ public class ServerLoader {
         }
     }
 
-    public static ServerHandler getSServerHandler() {
+    public static ServerHandler getServerHandler() {
         return handler;
     }
 
@@ -86,5 +84,4 @@ public class ServerLoader {
     public static void invalidate(Socket socket) {
         handlers.remove(socket);
     }
-
 }

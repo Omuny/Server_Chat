@@ -7,7 +7,8 @@ import java.io.IOException;
 
 public class PacketMessage extends Packet {
 
-    private String sender, message;
+    private String sender;
+    private String message;
 
     public PacketMessage() {}
 
@@ -36,5 +37,6 @@ public class PacketMessage extends Packet {
     public void handle() {
         sender = ServerLoader.getHandler(getSocket()).getNickname();
         ServerLoader.handlers.keySet().forEach(s -> ServerLoader.sendPacket(s, this));
+        System.out.println(String.format("[%s] %s", sender, message));
     }
 }

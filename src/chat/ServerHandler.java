@@ -32,5 +32,4 @@ public class ServerHandler extends Thread {
             } catch (InterruptedException ex) {}
         }
     }
-
 }

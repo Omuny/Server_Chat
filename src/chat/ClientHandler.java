@@ -55,5 +55,4 @@ public class ClientHandler extends Thread {
     public void invalidate() {
         ServerLoader.invalidate(client);
     }
-
 }
